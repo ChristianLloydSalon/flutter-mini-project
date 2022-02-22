@@ -21,12 +21,10 @@ class CustomElevatedButton extends HookWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100,
-      child: OutlinedButton(
+      child: ElevatedButton(
         onPressed: _onPressed,
         child: _child,
         style: OutlinedButton.styleFrom(
-          primary: Colors.white,
-          backgroundColor: (_selected)? Colors.blue : Colors.transparent,
           side: const BorderSide(width: 5.0, color: Colors.transparent),
         ),
       ),
