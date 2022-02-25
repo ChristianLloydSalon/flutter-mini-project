@@ -34,13 +34,25 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+
+  # State
   flutter_hooks: ^0.18.2+1
   hooks_riverpod: ^0.14.0+5
+
+  # API
   graphql_flutter: ^5.0.1
-  carousel_slider: ^4.0.0
+
+  # Route
   go_router: ^3.0.1
+
+  # UI
   font_awesome_flutter: ^9.2.0
+  carousel_slider: ^4.0.0
+
+  # Media
   file_picker: ^4.4.0
+
+  # Others
   intl: ^0.17.0
   uuid: ^3.0.6
 
@@ -93,10 +105,6 @@ flutter:
           weight: 600
         - asset: assets/fonts/Quicksand-Bold.ttf
           weight: 700
-
-    - family: GetSchwifty
-      fonts:
-        - asset: assets/fonts/get_schwifty.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
