@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mini_project/common/utils/responsive.dart';
-import 'package:mini_project/models/character.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mini_project/feature_graphql/domain/model/character.dart';
 
 class CharacterCard extends HookWidget {
   final Character character;
@@ -20,9 +20,19 @@ class CharacterCard extends HookWidget {
         children: [
           Opacity(
             opacity: 0.8,
-            child: Image.network(
-              character.image ?? '',
-              fit: BoxFit.fill,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                character.image ?? '',
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5, right: 5),
+              child: FaIcon(character.gender, size: 40),
             ),
           ),
           Align(
@@ -30,7 +40,7 @@ class CharacterCard extends HookWidget {
             child: Text(
               character.name ?? '',
               textAlign: TextAlign.center,
-              style: (Responsive.isDesktop(context)) ? Theme.of(context).textTheme.subtitle1 : Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
         ],

@@ -1,6 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mini_project/config/graphql.dart';
-import 'package:mini_project/models/character.dart';
+import 'package:mini_project/common/di/service_locator.dart';
+import 'package:mini_project/feature_graphql/domain/model/character.dart';
 
 class CharactersAPI {
   int _page = 1;
@@ -12,6 +12,7 @@ class CharactersAPI {
         id
         name
         image
+        gender
       }
     }
   }

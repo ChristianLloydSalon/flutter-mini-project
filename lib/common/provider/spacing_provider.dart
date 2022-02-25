@@ -9,5 +9,5 @@ class Spacing {
   final small = 10.0;
   final medium = 20.0;
   final large = 40.0;
-  final extraLarge = 80.0;
+  final extraLarge = 100.0;
 }

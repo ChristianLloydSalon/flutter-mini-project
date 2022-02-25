@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mini_project/common/components/custom_drawer_button.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
 
 class CustomDrawer extends HookWidget {
   const CustomDrawer({Key? key}) : super(key: key);

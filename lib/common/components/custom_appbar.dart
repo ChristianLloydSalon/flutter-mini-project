@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mini_project/common/utils/responsive.dart';
 import 'package:mini_project/common/utils/screen_type.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
 
 class CustomAppBar extends PreferredSize {
   late final ScreenType _type;
@@ -23,11 +24,11 @@ class CustomAppBar extends PreferredSize {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text(r"Gamer's Hub"),
-      leading: Padding(
-        padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
-        child: Image.asset('assets/images/logo.png', color: Colors.white),
+      leading: const Padding(
+        padding: EdgeInsets.only(top: 15, bottom: 15, left: 15),
+        child: FaIcon(FontAwesomeIcons.gamepad),
       ),
-      actions: (Responsive.isDesktop(context))
+      actions: (Responsive.isDesktop(context) || Responsive.isTablet(context))
           ? <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -40,7 +41,7 @@ class CustomAppBar extends PreferredSize {
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     primary: (_type == ScreenType.blog)
-                        ? Theme.of(context).colorScheme.secondary
+                        ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.surface,
                   ),
                 ),
@@ -57,7 +58,7 @@ class CustomAppBar extends PreferredSize {
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     primary: (_type == ScreenType.graphql)
-                        ? Theme.of(context).colorScheme.secondary
+                        ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.surface,
                   ),
                 ),

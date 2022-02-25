@@ -3,12 +3,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mini_project/common/utils/responsive.dart';
-import 'package:mini_project/models/blog.dart';
-import 'package:mini_project/modules/screens/blog/alert_dialogs/delete_dialog.dart';
-import 'package:mini_project/providers/blog/blog_provider.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
-import 'package:mini_project/providers/spacing_provider.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
+import 'package:mini_project/feature_blog/presentation/viewmodel/blogs_viewmodel.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
+import 'package:mini_project/common/provider/spacing_provider.dart';
 import 'package:go_router/go_router.dart';
+
+import 'alert_dialogs/delete_dialog.dart';
 
 class BlogCard extends HookWidget {
   late final Blog _blog;
@@ -20,15 +21,13 @@ class BlogCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final spacing = useProvider(spacingProvider);
-    final _blogsProvider = useProvider(blogsProvider);
+    final _blogsViewModel = useProvider(blogsViewModelProvider);
     final _routes = useProvider(routesProvider);
 
     _deleteProcess() {
-      _blogsProvider.deleteBlog(_blog);
+      _blogsViewModel.deleteBlog(_blog);
       Navigator.pop(context);
     }
-
-    final width = MediaQuery.of(context).size.width;
 
     return Card(
       child: InkWell(
@@ -46,7 +45,7 @@ class BlogCard extends HookWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('My Name',
+                      Text('Christian Lloyd Salon',
                           style: Theme.of(context).textTheme.subtitle1),
                       Text('Date: ${_blog.date}',
                           style: Theme.of(context).textTheme.subtitle2),
@@ -80,7 +79,7 @@ class BlogCard extends HookWidget {
                               child: const Text('Delete'),
                               onPressed: () {
                                 Navigator.pop(context);
-                                showAlertDialog(context, _deleteProcess);
+                                showDeleteAlertDialog(context, _deleteProcess);
                               },
                             ),
                           ),

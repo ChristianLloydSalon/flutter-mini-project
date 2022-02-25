@@ -7,6 +7,7 @@ import 'package:mini_project/common/utils/screen_type.dart';
 
 class CustomCarousel extends HookWidget {
   late final ScreenType type;
+
   CustomCarousel({Key? key, required this.type}) : super(key: key);
 
   final blogImageList = [
@@ -32,7 +33,12 @@ class CustomCarousel extends HookWidget {
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
-        height: height * ((Responsive.isMobile(context)) ? 0.25 : 0.8),
+        height: height *
+            (Responsive.isMobile(context)
+                ? 0.25
+                : Responsive.isTablet(context)
+                    ? 0.5
+                    : 0.75),
         child: Stack(
           children: [
             SizedBox(
@@ -43,7 +49,10 @@ class CustomCarousel extends HookWidget {
                   viewportFraction: 1,
                   autoPlayInterval: const Duration(seconds: 3),
                 ),
-                items: ((type == ScreenType.blog) ? blogImageList : rickAndMortyImageList).map(
+                items: ((type == ScreenType.blog)
+                        ? blogImageList
+                        : rickAndMortyImageList)
+                    .map(
                   (image) {
                     return Builder(
                       builder: (BuildContext context) {
@@ -71,8 +80,16 @@ class CustomCarousel extends HookWidget {
               alignment: Alignment.center,
               child: Center(
                 child: Text(
-                    (type == ScreenType.blog) ? 'Explore the latest games' : 'Rick and Morty Characters',
-                  style: TextStyle(fontSize: Responsive.isDesktop(context) ? 60 : 20, fontWeight: FontWeight.bold),
+                  (type == ScreenType.blog)
+                      ? 'Explore the latest games'
+                      : 'Rick and Morty Characters',
+                  style: TextStyle(
+                      fontSize: Responsive.isDesktop(context)
+                          ? 60
+                          : Responsive.isTablet(context)
+                              ? 40
+                              : 20,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),

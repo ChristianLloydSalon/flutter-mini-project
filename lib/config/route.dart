@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mini_project/models/blog.dart';
-import 'package:mini_project/modules/screens/blog/blog_editor/blog_editor.dart';
-import 'package:mini_project/modules/screens/blog/expanded_view/expanded_view.dart';
-import 'package:mini_project/modules/screens/blog/home_screen/home_screen.dart';
-import 'package:mini_project/modules/screens/graphql/graphql_screen/graphql_screen.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
+import 'package:mini_project/feature_blog/presentation/screen/editor/blog_editor.dart';
+import 'package:mini_project/feature_blog/presentation/screen/view/expanded_view.dart';
+import 'package:mini_project/feature_blog/presentation/screen/main/home_screen.dart';
+import 'package:mini_project/feature_graphql/presentation/screen/graphql_screen.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
 
 class Routes {
   static final _routes = useProvider(routesProvider);

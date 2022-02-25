@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-showAlertDialog(BuildContext context, Function() func) {
+showDeleteAlertDialog(BuildContext context, Function() func) {
   AlertDialog _alert = AlertDialog(
     title: const Text('Delete Blog'),
     content: const Text('Are you sure you want to delete this?'),

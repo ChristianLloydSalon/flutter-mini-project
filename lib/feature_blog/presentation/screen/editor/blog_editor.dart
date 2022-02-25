@@ -7,12 +7,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mini_project/common/utils/responsive.dart';
-import 'package:mini_project/models/blog.dart';
-import 'package:mini_project/modules/components/blog/custom_textfield.dart';
-import 'package:mini_project/modules/screens/blog/utils/blog_checker.dart';
-import 'package:mini_project/providers/blog/blog_provider.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
-import 'package:mini_project/providers/spacing_provider.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
+import 'package:mini_project/feature_blog/presentation/component/alert_dialogs/incomplete_data_dialog.dart';
+import 'package:mini_project/feature_blog/presentation/component/custom_textfield.dart';
+import 'package:mini_project/feature_blog/presentation/viewmodel/blogs_viewmodel.dart';
+import 'package:mini_project/feature_blog/util/blog_checker.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
+import 'package:mini_project/common/provider/spacing_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
@@ -27,7 +28,10 @@ class Editor extends HookWidget {
   Widget build(BuildContext context) {
     final spacing = useProvider(spacingProvider);
     final routes = useProvider(routesProvider);
-    final blogs = useProvider(blogsProvider);
+    final blogsViewModel = useProvider(blogsViewModelProvider);
+
+    final bool isEditRoute = GoRouter.of(context).location == '/${routes.homeRouteName}/${routes.editBlogRouteName}';
+    final bool isAddRoute = GoRouter.of(context).location == '/${routes.homeRouteName}/${routes.addBlogRouteName}';
 
     final _titleController = useTextEditingController();
     final _subtitleController = useTextEditingController();
@@ -71,21 +75,22 @@ class Editor extends HookWidget {
       bool status = isComplete(blog);
       if (status) {
         if (_blog == null) {
-          print('add ${blog.id}');
-          blogs.addBlog(blog);
+          blogsViewModel.addBlog(blog);
         } else {
-          print('edit ${blog.id}');
-          blogs.updateBlog(blog);
+          blogsViewModel.updateBlog(blog);
         }
         context.goNamed(routes.rootRouteName);
+      }
+      else {
+        showIncompleteDataDialog(context);
       }
     }
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        title: Text((isEditRoute) ? 'Edit Blog' : 'Add New Blog'),
       ),
-      body: SingleChildScrollView(
+      body: (isAddRoute || (isEditRoute && _blog != null)) ?SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(spacing.small),
           child: Column(
@@ -93,14 +98,14 @@ class Editor extends HookWidget {
               CustomTextField(
                 controller: _titleController,
                 label: 'Title',
-                style: Theme.of(context).textTheme.headline1,
+                style: (!Responsive.isMobile(context)) ? Theme.of(context).textTheme.headline1 : Theme.of(context).textTheme.subtitle1,
                 maxLines: 1,
               ),
               SizedBox(height: spacing.small),
               CustomTextField(
                 controller: _subtitleController,
                 label: 'Subtitle',
-                style: Theme.of(context).textTheme.headline2,
+                style: (!Responsive.isMobile(context)) ? Theme.of(context).textTheme.headline2 : Theme.of(context).textTheme.subtitle1,
                 maxLines: 1,
               ),
               SizedBox(height: spacing.small),
@@ -176,7 +181,7 @@ class Editor extends HookWidget {
             ],
           ),
         ),
-      ),
+      ) : const Center(child: Text('No Data to edit.')),
     );
   }
 }

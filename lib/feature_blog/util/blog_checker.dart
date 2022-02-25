@@ -1,4 +1,4 @@
-import 'package:mini_project/models/blog.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
 
 bool isComplete(Blog blog) {
   if (blog.title != '' &&

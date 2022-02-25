@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:mini_project/models/blog.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
 import 'dart:typed_data';
 
 import 'package:uuid/uuid.dart';

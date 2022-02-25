@@ -5,11 +5,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mini_project/common/utils/responsive.dart';
-import 'package:mini_project/models/blog.dart';
-import 'package:mini_project/modules/screens/blog/alert_dialogs/delete_dialog.dart';
-import 'package:mini_project/providers/blog/blog_provider.dart';
-import 'package:mini_project/providers/route_constants_provider.dart';
-import 'package:mini_project/providers/spacing_provider.dart';
+import 'package:mini_project/feature_blog/domain/model/blog.dart';
+import 'package:mini_project/feature_blog/presentation/viewmodel/blogs_viewmodel.dart';
+import 'package:mini_project/common/provider/route_constants_provider.dart';
+import 'package:mini_project/common/provider/spacing_provider.dart';
+
+import '../../component/alert_dialogs/delete_dialog.dart';
 
 class ExpandedView extends HookWidget {
   late final Blog? _blog;
@@ -21,23 +22,63 @@ class ExpandedView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final spacing = useProvider(spacingProvider);
-    final _blogsProvider = useProvider(blogsProvider);
+    final blogsViewModel = useProvider(blogsViewModelProvider);
     final _routes = useProvider(routesProvider);
+
+    final _loadScreen = useState((_blog == null) ? false : true);
 
     _deleteProcess() {
       if (_blog != null) {
-        _blogsProvider.deleteBlog(_blog!);
+        blogsViewModel.deleteBlog(_blog!);
       }
       Navigator.pop(context);
       context.goNamed(_routes.rootRouteName);
     }
 
-    final _image = useState<Uint8List?>(_blog!.image);
+    final ValueNotifier<Uint8List?> _image = useState<Uint8List?>(_blog?.image);
 
-    return Scaffold(
+    return (_loadScreen.value) ? Scaffold(
       appBar: AppBar(
         title: Text(_blog!.title),
-        backgroundColor: Colors.black,
+        actions: [
+          Theme(
+            data: Theme.of(context).copyWith(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+            ),
+            child: PopupMenuButton(
+              tooltip: 'Options',
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      child: const Text('Edit'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.goNamed(_routes.editBlogRouteName,
+                            extra: _blog);
+                      },
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      child: const Text('Delete'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showDeleteAlertDialog(context, _deleteProcess);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: (_blog != null)
           ? SingleChildScrollView(
@@ -78,43 +119,6 @@ class ExpandedView extends HookWidget {
                             ),
                           ],
                         ),
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                          ),
-                          child: PopupMenuButton(
-                            tooltip: 'Options',
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: TextButton(
-                                    child: const Text('Edit'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      context.goNamed(_routes.editBlogRouteName,
-                                          extra: _blog);
-                                    },
-                                  ),
-                                ),
-                              ),
-                              PopupMenuItem(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: TextButton(
-                                    child: const Text('Delete'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      showAlertDialog(context, _deleteProcess);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                     SizedBox(height: spacing.small),
@@ -143,6 +147,6 @@ class ExpandedView extends HookWidget {
           : const Center(
               child: Text('Error: No Blog'),
             ),
-    );
+    ) : const Scaffold(body: Center(child: Text('No data'),));
   }
 }
