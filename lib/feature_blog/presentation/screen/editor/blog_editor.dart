@@ -169,7 +169,7 @@ class Editor extends HookWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
-                  width: (Responsive.isDesktop(context)) ? 150 : 70,
+                  width: (Responsive.isDesktop(context)) ? 150 : 100,
                   child: ElevatedButton(
                     onPressed: _blogAddEdit,
                     child: (_blog != null)
